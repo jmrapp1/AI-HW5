@@ -78,9 +78,9 @@ public class Main {
         for (int i = 0; i < array.length; i++) {
             sumDenominator = sumDenominator + Math.pow(array[i] - mean, 2);
         }
-        skewness = Math.pow((sumDenominator / 2), 3 / 2);
+        sumDenominator = Math.pow((sumDenominator / 2), 3 / 2);
 
-        return skewness;
+        return sumNumerator / sumDenominator;
     }
 
 }
