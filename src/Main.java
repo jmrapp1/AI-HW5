@@ -68,30 +68,24 @@ public class Main {
     }//end median
 
     public static double findMean(int[] array) {
-        double mean = 0;
         int sum = 0;
 
         for (int i = 0; i < array.length; i++) {
             sum = sum + array[i];
         }
-        mean = sum / (array.length);
-        return mean;
+        return sum / (array.length);
     }
 
     public static double findVariance(int[] array) {
-        double variance = 0;
         double sum = 0;
         double mean = findMean(array);
         for (int i = 0; i < array.length; i++) {
             sum = sum + Math.pow(array[i] - mean, 2);
         }
-        variance = sum / array.length;
-        return variance;
-
+        return sum / array.length;
     }
 
     public static double skewness(int[] array) {
-        double skewness = 0;
         double mean = findMean(array);
         double sumNumerator = 0;
         double sumDenominator = 0;
@@ -123,8 +117,8 @@ public class Main {
         for (int i = 0; i < image.length; i++) {
             sumDenominator = sumDenominator + Math.pow(image[i] - mean, 2);
         }
-        kurtosis = (Math.pow((sumDenominator / 2), 2));
-
+        sumDenominator = (Math.pow((sumDenominator / 2), 2));
+        kurtosis = sumNumerator / sumDenominator;
         return kurtosis-3;
     }//end
 
