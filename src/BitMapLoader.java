@@ -62,7 +62,7 @@ public class BitMapLoader {
 
 
     //*****************************************************
-    public static void loadbitmap (InputStream fs) {
+    public static int[] loadbitmap (InputStream fs) {
 
         try {
 
@@ -97,6 +97,7 @@ public class BitMapLoader {
             if (nbitcount!=8) {
                 System.out.println("Error: Can only handle 8-bit grey-scale bitmaps");
                 System.exit(0);
+                return null;
             }
 
 
@@ -149,10 +150,9 @@ public class BitMapLoader {
             //*** Print image information
             //*** ndata8[0..nwidth*nheight] contains the image in 8bit grey scale
             //***********************************************************************************
-            System.out.println("Image width and height: " + nwidth + ", " + nheight);
+            /*System.out.println("Image width and height: " + nwidth + ", " + nheight);
             System.out.println("Image padding: "+npad8);
-            System.out.println("Image length: " + bdata.length);
-
+            System.out.println("Image length: " + bdata.length); */
             //*** print the entire array of nwidth*nheight pixels
             int k = 0;
             for (int i=0; i<nheight; i++){
@@ -161,14 +161,16 @@ public class BitMapLoader {
 
                     //*** HERE HERE HERE HERE HERE HERE HERE HERE HERE
                     //*** perform feature extraction on ndata8[]
-                    System.out.print(ndata8[k] + " ");
+                    // System.out.print(ndata8[k] + " ");
                     k++;
                 }
-                System.out.println();
+                // System.out.println();
             }
 
             //*** close the image file
             fs.close();
+
+            return ndata8;
         }
 
         catch (Exception e) {
@@ -176,7 +178,7 @@ public class BitMapLoader {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
-
+        return null;
     } //loadbitmap
 
 public static double findMean(int [] array){
