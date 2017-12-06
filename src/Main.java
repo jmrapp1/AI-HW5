@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +32,14 @@ public class Main {
         return matrix;
     }
 
+    //this works under the assumption that the array is even in size, each image being represented by an array of size 48*48
+    public static double median (int[]image){
+        Arrays.sort(image);
+        double v1 = image[image.length/2];
+        double v2 = image[(image.length/2)-1];
+        double median = (v1+v2)/2;
+        return median;
+    }//end median
 
     public static double findMean(int[] array) {
         double mean = 0;
