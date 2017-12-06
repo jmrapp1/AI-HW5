@@ -11,6 +11,8 @@ public class Main {
     public static void main(String[] args) {
         int[][] faces = readBitmaps();
         System.out.println("Read in " + faces.length + " people's faces");
+        double[][] statFeatures = getStatFeatures(faces);
+
     }
 
     private static double[][] getStatFeatures(int[][] faces) {
@@ -22,7 +24,7 @@ public class Main {
             statFeatures[i][1] = findMean(face);
             statFeatures[i][2] = findVariance(face);
             statFeatures[i][3] = skewness(face);
-            // statFeatures[i][4] =
+            statFeatures[i][4] = kurtosis(face);
         }
         return statFeatures;
     }
