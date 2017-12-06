@@ -13,13 +13,16 @@ public class Main {
         System.out.println("Read in " + faces.length + " people's faces");
     }
 
-    private static int[][] getStatFeatures(int[][] faces) {
-        int[][] statFeatures = new int[faces.length][];
+    private static double[][] getStatFeatures(int[][] faces) {
+        double[][] statFeatures = new double[faces.length][];
         for (int i = 0; i < faces.length; i++) {
-            statFeatures[i] = new int[5];
-            for (int j = 0; j < faces[i].length; j++) {
-
-            }
+            int[] face = faces[i];
+            statFeatures[i] = new double[5];
+            statFeatures[i][0] = median(face);
+            statFeatures[i][1] = findMean(face);
+            statFeatures[i][2] = findVariance(face);
+            statFeatures[i][3] = skewness(face);
+            // statFeatures[i][4] =
         }
         return statFeatures;
     }
