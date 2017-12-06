@@ -1,3 +1,5 @@
+import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.io.File;
@@ -7,37 +9,56 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[] args) {
-        int[][][] faces = readBitmaps();
+        int[][] faces = readBitmaps();
         System.out.println("Read in " + faces.length + " people's faces");
     }
 
-    public static int[][][] readBitmaps() {
-        File[] people = new File("facesDB/").listFiles(f -> f.isDirectory()); // Get all files that are dirs
-        int[][][] matrix = new int[people.length][][];
+    private static int[][] getStatFeatures(int[][] faces) {
+        int[][] statFeatures = new int[faces.length][];
+        for (int i = 0; i < faces.length; i++) {
+            statFeatures[i] = new int[5];
+            for (int j = 0; j < faces[i].length; j++) {
 
-        for (int i = 0; i < people.length; i++) {
-            File dir = people[i];
-            File[] faces = dir.listFiles(f -> !f.isDirectory() && f.getName().contains(".BMP") && !f.getName().startsWith("10")); // Get all face images, don't include 10
-            matrix[i] = new int[faces.length][]; // create array to hold the images
+            }
+        }
+        return statFeatures;
+    }
 
-            for (int j = 0; j < faces.length; j++) {
-                File face = faces[j];
-                try {
-                    matrix[i][j] = BitMapLoader.loadbitmap(new FileInputStream(face));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+    private static void getAllBitmapFiles(ArrayList<File> files, File directory) {
+        File[] allFiles = directory.listFiles();
+        for (File f : allFiles) {
+            if (f.isDirectory()) {
+                getAllBitmapFiles(files, f);
+            } else if (f.getName().contains(".BMP") && !f.getName().startsWith("10")) {
+                files.add(f);
+            }
+        }
+    }
+
+    public static int[][] readBitmaps() {
+        ArrayList<File> faces = new ArrayList<>();
+        getAllBitmapFiles(faces, new File("facesDB/"));
+
+        int[][] matrix = new int[faces.size()][];
+
+        for (int i = 0; i < faces.size(); i++) {
+            File face = faces.get(i);
+            try {
+                matrix[i] = BitMapLoader.loadbitmap(new FileInputStream(face));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
         return matrix;
     }
 
     //this works under the assumption that the array is even in size, each image being represented by an array of size 48*48
-    public static double median (int[]image){
+
+    public static double median(int[] image) {
         Arrays.sort(image);
-        double v1 = image[image.length/2];
-        double v2 = image[(image.length/2)-1];
-        double median = (v1+v2)/2;
+        double v1 = image[image.length / 2];
+        double v2 = image[(image.length / 2) - 1];
+        double median = (v1 + v2) / 2;
         return median;
     }//end median
 
