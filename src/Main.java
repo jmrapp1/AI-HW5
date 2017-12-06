@@ -188,6 +188,46 @@ public class Main {
         return min;
     }
 
+    public static double mean_min(int[][]images){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[1][i] > min){
+                min = images[1][i];
+            }
+        }
+        return min;
+    }
+
+    public static double variance_min(int[][]images){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[2][i] > min){
+                min = images[2][i];
+            }
+        }
+        return min;
+    }
+
+    public static double skewness_min(int[][]images){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[3][i] > min){
+                min = images[3][i];
+            }
+        }
+        return min;
+    }
+
+    public static double kurtosis_min(int[][]images){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[4][i] > min){
+                min = images[4][i];
+            }
+        }
+        return min;
+    }
+
     /*
         int mean_min = Integer.MAX_VALUE;
         int variance_min = Integer.MAX_VALUE;
