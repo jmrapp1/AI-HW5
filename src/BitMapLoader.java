@@ -179,7 +179,46 @@ public class BitMapLoader {
 
     } //loadbitmap
 
+public static double findMean(int [] array){
+    double mean=0;
+    int sum =0;
 
+    for(int i=0; i<array.length; i++){
+        sum = sum+ array[i];
+    }
+    mean = sum/(array.length);
+    return mean;
+}
 
+public static double findVariance (int [] array){
+    double variance =0;
+    double sum =0;
+    double mean = findMean(array);
+    for(int i=0; i<array.length; i++){
+        sum = sum + Math.pow(array[i]-mean, 2);
+    }
+    variance = sum/array.length;
+    return variance;
+
+}
+
+public static double skewness (int [] array){
+    double skewness =0;
+    double mean = findMean(array);
+    double sumNumerator=0;
+    double sumDenominator = 0;
+
+    for(int i =0; i <array.length; i++){
+        sumNumerator = sumNumerator + Math.pow(array[i]-mean, 3);
+    }
+    sumNumerator = sumNumerator/array.length;
+
+    for (int i=0; i <array.length; i++){
+        sumDenominator = sumDenominator + Math.pow(array[i]-mean, 2);
+    }
+    skewness = Math.pow((sumDenominator/2), 3/2);
+
+    return skewness;
+}
 
 } //BitMapLoader
