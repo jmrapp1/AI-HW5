@@ -107,4 +107,96 @@ public class Main {
         return sumNumerator / sumDenominator;
     }
 
+    public static double kurtosis(int[]image){
+        double kurtosis = 0;
+        double sumNumerator = 0;
+        double sumDenominator = 0;
+        double mean = findMean(image);
+
+        for (int i = 0; i < image.length; i++) {
+            sumNumerator = sumNumerator + Math.pow(image[i] - mean, 4);
+        }
+        sumNumerator = sumNumerator / image.length;
+
+        for (int i = 0; i < image.length; i++) {
+            sumDenominator = sumDenominator + Math.pow(image[i] - mean, 2);
+        }
+        kurtosis = (Math.pow((sumDenominator / 2), 2));
+
+        return kurtosis-3;
+    }//end
+
+
+    //***************************************************//
+    //              Maximum Values                       //
+    //***************************************************//
+
+    public static double median_max(int[][]images){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[0][i] > max){
+                max = images[0][i];
+            }
+        }
+        return max;
+    }
+    public static double mean_max(int[][]images){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[1][i] > max){
+                max = images[1][i];
+            }
+        }
+        return max;
+    }
+    public static double variance_max(int[][]images){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[2][i] > max){
+                max = images[2][i];
+            }
+        }
+        return max;
+    }
+    public static double skewness_max(int[][]images){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[3][i] > max){
+                max = images[3][i];
+            }
+        }
+        return max;
+    }
+    public static double kurtosis_max(int[][]images){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[4][i] > max){
+                max = images[4][i];
+            }
+        }
+        return max;
+    }
+
+
+    //***************************************************//
+    //              Minimum Values                       //
+    //***************************************************//
+
+    public static double median_min(int[][]images){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < 360; i++){
+            if(images[0][i] > min){
+                min = images[0][i];
+            }
+        }
+        return min;
+    }
+
+    /*
+        int mean_min = Integer.MAX_VALUE;
+        int variance_min = Integer.MAX_VALUE;
+        int skewness_min = Integer.MAX_VALUE;
+        int kurtosis_min = Integer.MAX_VALUE;
+    */
+
 }
