@@ -29,6 +29,10 @@ public class Main {
         return statFeatures;
     }
 
+    public static double getNormal(double x, double min, double max) {
+        return (x - min) / (max - min);
+    }
+
     private static void getAllBitmapFiles(ArrayList<File> files, File directory) {
         File[] allFiles = directory.listFiles();
         for (File f : allFiles) {
