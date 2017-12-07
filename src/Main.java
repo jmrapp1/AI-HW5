@@ -1,10 +1,6 @@
-import java.io.FileFilter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class Main {
 
@@ -14,8 +10,9 @@ public class Main {
         int[][] faces = data.getFaces();
 
         double[][] statFeatures = getStatFeatures(faces);
-        double[][] normalizeFeatures = getNormalizedFeatures(statFeatures);
+        double[][] normalizedFeatures = getNormalizedFeatures(statFeatures);
         System.out.println("Read in " + faces.length + " people's faces");
+        outputFile("faces", normalizedFeatures);
     }
 
     private static double[][] getStatFeatures(int[][] faces) {
@@ -42,6 +39,20 @@ public class Main {
             }
         }
         return norm;
+    }
+
+    private static void outputFile(String fileName, double[][] faces) {
+        try (PrintWriter out = new PrintWriter(fileName + ".dat")) {
+            for (int i = 0; i < faces.length; i++) {
+                String row = "";
+                for (int j = 0; j < faces[i].length; j++) {
+                    row += faces[i][j] + " ";
+                }
+                out.println(row);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static double getNormal(double x, double min, double max) {
@@ -125,7 +136,7 @@ public class Main {
         return sumNumerator / sumDenominator;
     }
 
-    public static double kurtosis(int[]image){
+    public static double kurtosis(int[] image) {
         double kurtosis = 0;
         double sumNumerator = 0;
         double sumDenominator = 0;
@@ -141,7 +152,7 @@ public class Main {
         }
         sumDenominator = (Math.pow((sumDenominator / 2), 2));
         kurtosis = sumNumerator / sumDenominator;
-        return kurtosis-3;
+        return kurtosis - 3;
     }//end
 
 
@@ -149,10 +160,10 @@ public class Main {
     //              Maximum Values                       //
     //***************************************************//
 
-    public static double findMax(double[][] images, int index){
+    public static double findMax(double[][] images, int index) {
         double max = Integer.MIN_VALUE;
-        for (int i = 0; i < images.length; i++){
-            if(images[i][index] > max){
+        for (int i = 0; i < images.length; i++) {
+            if (images[i][index] > max) {
                 max = images[i][index];
             }
         }
