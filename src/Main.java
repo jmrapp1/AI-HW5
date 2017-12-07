@@ -10,9 +10,9 @@ public class Main {
 
     public static void main(String[] args) {
         int[][] faces = readBitmaps();
-        System.out.println("Read in " + faces.length + " people's faces");
         double[][] statFeatures = getStatFeatures(faces);
-
+        double[][] normalizeFeatures = getNormalizedFeatures(statFeatures);
+        System.out.println("Read in " + faces.length + " people's faces");
     }
 
     private static double[][] getStatFeatures(int[][] faces) {
@@ -29,7 +29,20 @@ public class Main {
         return statFeatures;
     }
 
+    private static double[][] getNormalizedFeatures(double[][] faces) {
+        double[][] norm = new double[faces.length][];
+        for (int i = 0; i < faces.length; i++) {
+            double[] face = faces[i];
+            norm[i] = new double[5];
+            for (int j = 0; j < norm[i].length; j++) {
+                norm[i][j] = getNormal(face[j], findMin(faces, j), findMax(faces, j));
+            }
+        }
+        return norm;
+    }
+
     public static double getNormal(double x, double min, double max) {
+        System.out.println("X: " + x + " Min: " + min + "Max: " + max);
         return (x - min) / (max - min);
     }
 
@@ -131,47 +144,11 @@ public class Main {
     //              Maximum Values                       //
     //***************************************************//
 
-    public static double median_max(int[][]images){
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[0][i] > max){
-                max = images[0][i];
-            }
-        }
-        return max;
-    }
-    public static double mean_max(int[][]images){
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[1][i] > max){
-                max = images[1][i];
-            }
-        }
-        return max;
-    }
-    public static double variance_max(int[][]images){
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[2][i] > max){
-                max = images[2][i];
-            }
-        }
-        return max;
-    }
-    public static double skewness_max(int[][]images){
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[3][i] > max){
-                max = images[3][i];
-            }
-        }
-        return max;
-    }
-    public static double kurtosis_max(int[][]images){
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[4][i] > max){
-                max = images[4][i];
+    public static double findMax(double[][] images, int index){
+        double max = Integer.MIN_VALUE;
+        for (int i = 0; i < images.length; i++){
+            if(images[i][index] > max){
+                max = images[i][index];
             }
         }
         return max;
@@ -182,61 +159,14 @@ public class Main {
     //              Minimum Values                       //
     //***************************************************//
 
-    public static double median_min(int[][]images){
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[0][i] > min){
-                min = images[0][i];
+    public static double findMin(double[][] images, int index) {
+        double min = Integer.MAX_VALUE;
+        for (int i = 0; i < images.length; i++) {
+            if (images[i][index] > min) {
+                min = images[i][index];
             }
         }
         return min;
     }
-
-    public static double mean_min(int[][]images){
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[1][i] > min){
-                min = images[1][i];
-            }
-        }
-        return min;
-    }
-
-    public static double variance_min(int[][]images){
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[2][i] > min){
-                min = images[2][i];
-            }
-        }
-        return min;
-    }
-
-    public static double skewness_min(int[][]images){
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[3][i] > min){
-                min = images[3][i];
-            }
-        }
-        return min;
-    }
-
-    public static double kurtosis_min(int[][]images){
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < 360; i++){
-            if(images[4][i] > min){
-                min = images[4][i];
-            }
-        }
-        return min;
-    }
-
-    /*
-        int mean_min = Integer.MAX_VALUE;
-        int variance_min = Integer.MAX_VALUE;
-        int skewness_min = Integer.MAX_VALUE;
-        int kurtosis_min = Integer.MAX_VALUE;
-    */
 
 }
