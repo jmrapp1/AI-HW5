@@ -11,7 +11,7 @@ public class Main {
 
         double[][] statFeatures = getStatFeatures(faces);
         double[][] normalizedFeatures = getNormalizedFeatures(statFeatures);
-        System.out.println("Read in " + faces.length + " people's faces");
+        System.out.println("Processed " + faces.length + " people's faces");
         outputFile("faces", normalizedFeatures);
     }
 
