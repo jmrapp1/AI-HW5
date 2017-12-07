@@ -9,7 +9,10 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[] args) {
-        int[][] faces = readBitmaps();
+        FacesData data = readBitmaps();
+        int[] subjects = data.getSubjects();
+        int[][] faces = data.getFaces();
+
         double[][] statFeatures = getStatFeatures(faces);
         double[][] normalizeFeatures = getNormalizedFeatures(statFeatures);
         System.out.println("Read in " + faces.length + " people's faces");
@@ -56,21 +59,24 @@ public class Main {
         }
     }
 
-    public static int[][] readBitmaps() {
+    public static FacesData readBitmaps() {
         ArrayList<File> faces = new ArrayList<>();
         getAllBitmapFiles(faces, new File("facesDB/"));
 
         int[][] matrix = new int[faces.size()][];
+        int[] subjects = new int[faces.size()];
 
         for (int i = 0; i < faces.size(); i++) {
             File face = faces.get(i);
             try {
+                int subject = Integer.parseInt(face.getParentFile().getName().replace("S", ""));
                 matrix[i] = BitMapLoader.loadbitmap(new FileInputStream(face));
+                subjects[i] = subject;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-        return matrix;
+        return new FacesData(subjects, matrix);
     }
 
     //this works under the assumption that the array is even in size, each image being represented by an array of size 48*48
