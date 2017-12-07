@@ -42,7 +42,6 @@ public class Main {
     }
 
     public static double getNormal(double x, double min, double max) {
-        System.out.println("X: " + x + " Min: " + min + "Max: " + max);
         return (x - min) / (max - min);
     }
 
@@ -162,7 +161,7 @@ public class Main {
     public static double findMin(double[][] images, int index) {
         double min = Integer.MAX_VALUE;
         for (int i = 0; i < images.length; i++) {
-            if (images[i][index] > min) {
+            if (images[i][index] < min) {
                 min = images[i][index];
             }
         }
