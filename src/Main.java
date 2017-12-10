@@ -30,11 +30,14 @@ public class Main {
         if (split.length < 6) {
             int total = 6 - split.length;
             for (int i = 0; i < total; i++) {
-                str += "0" + (csv ? ", " : " ");
+                str += "0.1" + (csv ? ", " : " ");
             }
         }
         for (int i = 0; i < split.length; i++) {
-            str += split[i];
+            String type = split[i];
+            if (type.equals("0")) type = "0.1";
+            else if (type.equals("1")) type = "0.9";
+            str += type;
             if (i + 1 < split.length) {
                 str += (csv ? ", " : " ");
             }
