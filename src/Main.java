@@ -12,7 +12,22 @@ public class Main {
         double[][] statFeatures = getStatFeatures(faces);
         double[][] normalizedFeatures = getNormalizedFeatures(statFeatures);
         System.out.println("Processed " + faces.length + " people's faces");
-        outputFile("faces", normalizedFeatures);
+        outputFile("faces", normalizedFeatures, subjects);
+    }
+
+    private static String getBinarySubject(int subject) {
+        String binary = Integer.toBinaryString(subject);
+        String str = "";
+        String[] split = binary.split("");
+        if (split.length < 6) {
+            for (int i = 0; i < 6 - split.length; i++) {
+                str += "0 ";
+            }
+        }
+        for (int i = 0; i < split.length; i++) {
+            str += split[i] + (i + 1 == split.length ? "" : " ");
+        }
+        return str;
     }
 
     private static double[][] getStatFeatures(int[][] faces) {
@@ -41,13 +56,14 @@ public class Main {
         return norm;
     }
 
-    private static void outputFile(String fileName, double[][] faces) {
+    private static void outputFile(String fileName, double[][] faces, int[] subjects) {
         try (PrintWriter out = new PrintWriter(fileName + ".dat")) {
             for (int i = 0; i < faces.length; i++) {
                 String row = "";
                 for (int j = 0; j < faces[i].length; j++) {
                     row += faces[i][j] + " ";
                 }
+                row += getBinarySubject(subjects[i]);
                 out.println(row);
             }
         } catch (IOException e) {
