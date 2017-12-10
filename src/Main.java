@@ -22,7 +22,7 @@ public class Main {
         if (split.length < 6) {
             int total = 6 - split.length;
             for (int i = 0; i < total; i++) {
-                str += "0" + (i + 1 == total ? "" : (csv ? ", " : " "));
+                str += "0" + (csv ? ", " : " ");
             }
         }
         for (int i = 0; i < split.length; i++) {
