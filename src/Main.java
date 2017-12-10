@@ -64,12 +64,15 @@ public class Main {
             for (int i = 0; i < faces.length; i++) {
                 String rowDat = "";
                 String rowCsv = "";
+                boolean includeSubject = false;
                 for (int j = 0; j < faces[i].length; j++) {
-                    rowDat += faces[i][j] + (j + 1 == faces.length ? "" : " ");
-                    rowCsv += faces[i][j] + (j + 1 == faces.length ? "" : ", ");
+                    rowDat += faces[i][j] + (j + 1 == faces[i].length && !includeSubject ? "" : " ");
+                    rowCsv += faces[i][j] + (j + 1 == faces[i].length && !includeSubject ? "" : ", ");
                 }
-                rowDat += getBinarySubject(subjects[i], false);
-                rowCsv += getBinarySubject(subjects[i], true);
+                if (includeSubject) {
+                    rowDat += getBinarySubject(subjects[i], false);
+                    rowCsv += getBinarySubject(subjects[i], true);
+                }
                 outDat.println(rowDat);
                 outCsv.println(rowCsv);
             }
