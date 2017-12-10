@@ -73,6 +73,10 @@ public class Main {
                 outDat.println(rowDat);
                 outCsv.println(rowCsv);
             }
+            outDat.flush();
+            outDat.close();
+            outCsv.flush();
+            outCsv.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
