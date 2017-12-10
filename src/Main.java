@@ -15,17 +15,18 @@ public class Main {
         outputFile("faces", normalizedFeatures, subjects);
     }
 
-    private static String getBinarySubject(int subject) {
+    private static String getBinarySubject(int subject, boolean csv) {
         String binary = Integer.toBinaryString(subject);
         String str = "";
         String[] split = binary.split("");
         if (split.length < 6) {
-            for (int i = 0; i < 6 - split.length; i++) {
-                str += "0 ";
+            int total = 6 - split.length;
+            for (int i = 0; i < total; i++) {
+                str += "0" + (i + 1 == total ? "" : (csv ? ", " : " "));
             }
         }
         for (int i = 0; i < split.length; i++) {
-            str += split[i] + (i + 1 == split.length ? "" : " ");
+            str += split[i] + (i + 1 == split.length ? "" : (csv ? ", " : " "));
         }
         return str;
     }
@@ -57,14 +58,20 @@ public class Main {
     }
 
     private static void outputFile(String fileName, double[][] faces, int[] subjects) {
-        try (PrintWriter out = new PrintWriter(fileName + ".dat")) {
+        try {
+            PrintWriter outDat = new PrintWriter(fileName + ".dat");
+            PrintWriter outCsv = new PrintWriter(fileName + ".csv");
             for (int i = 0; i < faces.length; i++) {
-                String row = "";
+                String rowDat = "";
+                String rowCsv = "";
                 for (int j = 0; j < faces[i].length; j++) {
-                    row += faces[i][j] + " ";
+                    rowDat += faces[i][j] + (j + 1 == faces.length ? "" : " ");
+                    rowCsv += faces[i][j] + (j + 1 == faces.length ? "" : ", ");
                 }
-                row += getBinarySubject(subjects[i]);
-                out.println(row);
+                rowDat += getBinarySubject(subjects[i], false);
+                rowCsv += getBinarySubject(subjects[i], true);
+                outDat.println(rowDat);
+                outCsv.println(rowCsv);
             }
         } catch (IOException e) {
             e.printStackTrace();
