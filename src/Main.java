@@ -5,14 +5,20 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        FacesData data = readBitmaps();
+        boolean findOnlyTarget = false;
+        if (findOnlyTarget) outputFaceData("targets", true);
+        else outputFaceData("faces", false);
+    }
+
+    public static void outputFaceData(String name, boolean findOnlyTarget) {
+        FacesData data = readBitmaps(findOnlyTarget);
         int[] subjects = data.getSubjects();
         int[][] faces = data.getFaces();
 
         double[][] statFeatures = getStatFeatures(faces);
         double[][] normalizedFeatures = getNormalizedFeatures(statFeatures);
         System.out.println("Processed " + faces.length + " people's faces");
-        outputFile("faces", normalizedFeatures, subjects);
+        outputFile(name, normalizedFeatures, subjects);
     }
 
     private static String getBinarySubject(int subject, boolean csv) {
@@ -89,20 +95,20 @@ public class Main {
         return (x - min) / (max - min);
     }
 
-    private static void getAllBitmapFiles(ArrayList<File> files, File directory) {
+    private static void getAllBitmapFiles(ArrayList<File> files, File directory, boolean findOnlyTarget) {
         File[] allFiles = directory.listFiles();
         for (File f : allFiles) {
             if (f.isDirectory()) {
-                getAllBitmapFiles(files, f);
-            } else if (f.getName().contains(".BMP") && !f.getName().startsWith("10")) {
+                getAllBitmapFiles(files, f, findOnlyTarget);
+            } else if (f.getName().contains(".BMP") && ((findOnlyTarget && f.getName().startsWith("10")) || (!findOnlyTarget && !f.getName().startsWith("10")))) {
                 files.add(f);
             }
         }
     }
 
-    public static FacesData readBitmaps() {
+    public static FacesData readBitmaps(boolean findOnlyTarget) {
         ArrayList<File> faces = new ArrayList<>();
-        getAllBitmapFiles(faces, new File("facesDB/"));
+        getAllBitmapFiles(faces, new File("facesDB/"), findOnlyTarget);
 
         int[][] matrix = new int[faces.size()][];
         int[] subjects = new int[faces.size()];
