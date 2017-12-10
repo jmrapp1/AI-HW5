@@ -4,8 +4,9 @@ import java.util.Arrays;
 
 public class Main {
 
+    private static boolean findOnlyTarget = true;
+
     public static void main(String[] args) {
-        boolean findOnlyTarget = false;
         if (findOnlyTarget) outputFaceData("targets", true);
         else outputFaceData("faces", false);
     }
@@ -21,7 +22,7 @@ public class Main {
         outputFile(name, normalizedFeatures, subjects);
     }
 
-    private static String getBinarySubject(int subject, boolean csv) {
+    private static String getBinarySubject(int subject, boolean csv, boolean addEnd) {
         String binary = Integer.toBinaryString(subject);
         String str = "";
         String[] split = binary.split("");
@@ -32,7 +33,14 @@ public class Main {
             }
         }
         for (int i = 0; i < split.length; i++) {
-            str += split[i] + (i + 1 == split.length ? "" : (csv ? ", " : " "));
+            str += split[i];
+            if (i + 1 == split.length) {
+                if (addEnd) {
+                    str += (csv ? ", " : " ");
+                }
+            } else {
+                str += (csv ? ", " : " ");
+            }
         }
         return str;
     }
@@ -70,14 +78,16 @@ public class Main {
             for (int i = 0; i < faces.length; i++) {
                 String rowDat = "";
                 String rowCsv = "";
-                boolean includeSubject = false;
-                for (int j = 0; j < faces[i].length; j++) {
-                    rowDat += faces[i][j] + (j + 1 == faces[i].length && !includeSubject ? "" : " ");
-                    rowCsv += faces[i][j] + (j + 1 == faces[i].length && !includeSubject ? "" : ", ");
+                boolean includeOnlySubject = findOnlyTarget;
+                if (!includeOnlySubject) {
+                    for (int j = 0; j < faces[i].length; j++) {
+                        rowDat += faces[i][j] + (j + 1 == faces[i].length ? "" : " ");
+                        rowCsv += faces[i][j] + (j + 1 == faces[i].length ? "" : ", ");
+                    }
                 }
-                if (includeSubject) {
-                    rowDat += getBinarySubject(subjects[i], false);
-                    rowCsv += getBinarySubject(subjects[i], true);
+                if (includeOnlySubject) {
+                    rowDat += getBinarySubject(subjects[i], false, !findOnlyTarget);
+                    rowCsv += getBinarySubject(subjects[i], true, !findOnlyTarget);
                 }
                 outDat.println(rowDat);
                 outCsv.println(rowCsv);
