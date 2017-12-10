@@ -4,14 +4,15 @@ import java.util.Arrays;
 
 public class Main {
 
-    private static boolean findOnlyTarget = true;
 
     public static void main(String[] args) {
-        if (findOnlyTarget) outputFaceData("targets", true);
-        else outputFaceData("faces", false);
+        outputFaceData("faces-data", false, false);
+        outputFaceData("faces-subject", false, true);
+        outputFaceData("targets-data", true, false);
+        outputFaceData("targets-subject", true, true);
     }
 
-    public static void outputFaceData(String name, boolean findOnlyTarget) {
+    public static void outputFaceData(String name, boolean findOnlyTarget, boolean onlySubject) {
         FacesData data = readBitmaps(findOnlyTarget);
         int[] subjects = data.getSubjects();
         int[][] faces = data.getFaces();
@@ -19,10 +20,10 @@ public class Main {
         double[][] statFeatures = getStatFeatures(faces);
         double[][] normalizedFeatures = getNormalizedFeatures(statFeatures);
         System.out.println("Processed " + faces.length + " people's faces");
-        outputFile(name, normalizedFeatures, subjects);
+        outputFile(name, normalizedFeatures, subjects, onlySubject);
     }
 
-    private static String getBinarySubject(int subject, boolean csv, boolean addEnd) {
+    private static String getBinarySubject(int subject, boolean csv) {
         String binary = Integer.toBinaryString(subject);
         String str = "";
         String[] split = binary.split("");
@@ -34,11 +35,7 @@ public class Main {
         }
         for (int i = 0; i < split.length; i++) {
             str += split[i];
-            if (i + 1 == split.length) {
-                if (addEnd) {
-                    str += (csv ? ", " : " ");
-                }
-            } else {
+            if (i + 1 < split.length) {
                 str += (csv ? ", " : " ");
             }
         }
@@ -71,23 +68,22 @@ public class Main {
         return norm;
     }
 
-    private static void outputFile(String fileName, double[][] faces, int[] subjects) {
+    private static void outputFile(String fileName, double[][] faces, int[] subjects, boolean onlySubject) {
         try {
             PrintWriter outDat = new PrintWriter(fileName + ".dat");
             PrintWriter outCsv = new PrintWriter(fileName + ".csv");
             for (int i = 0; i < faces.length; i++) {
                 String rowDat = "";
                 String rowCsv = "";
-                boolean includeOnlySubject = findOnlyTarget;
-                if (!includeOnlySubject) {
+                if (!onlySubject) {
                     for (int j = 0; j < faces[i].length; j++) {
                         rowDat += faces[i][j] + (j + 1 == faces[i].length ? "" : " ");
                         rowCsv += faces[i][j] + (j + 1 == faces[i].length ? "" : ", ");
                     }
                 }
-                if (includeOnlySubject) {
-                    rowDat += getBinarySubject(subjects[i], false, !findOnlyTarget);
-                    rowCsv += getBinarySubject(subjects[i], true, !findOnlyTarget);
+                if (onlySubject) {
+                    rowDat += getBinarySubject(subjects[i], false);
+                    rowCsv += getBinarySubject(subjects[i], true);
                 }
                 outDat.println(rowDat);
                 outCsv.println(rowCsv);
